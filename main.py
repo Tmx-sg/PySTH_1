@@ -1,18 +1,14 @@
+#!/usr/bin/env python3
+
 # -*- coding: utf-8 -*-
 from rich.console import Console
-from rich.panel import Panel
-from rich.table import Table
-from rich.prompt import Prompt
 from tabulate import tabulate
 import os
-
 import load
-
 # 创建 Console 对象
 console = Console()
-
+print("111")
 # 主菜单
-
 def display_main_menu():
     """
     显示主界面菜单
@@ -22,6 +18,11 @@ def display_main_menu():
     print("|  Welcome to the PySTH Toolkit! Choose an option |")
     print("|  below to explore the computational utilities.  |")
     print("+-------------------------------------------------+")
+    print("This program allows you to calculate the solar-to-hydrogen (STH)")
+    print("conversion efficiency for 4 types of photocatalytic materials.")
+    print("Additionally, the program provides visualizations of the calculated ")
+    print("efficiency and related parameters, helping you better understand")
+    print("and analyze the results.")
     print("=========================== PySTH Toolkit ===========================")
     print(" 1) Conventional photocatalysts    ")
     print(" 2) Janus materials                ")
@@ -63,39 +64,39 @@ def display_sub_menu():
     print("-------------------------------------------------------")
 def display_sub_menu_1():
     print("=========================== Cor-functions ===========================")
-    print("                   For conventional photocatalysts                   ")
+    print("                   conventional photocatalysts                   ")
     print(" 11) Calculate STH efficiency    ")
     print(" 12) Generate STH map          ")
     print("---------------------------------------------------------------------")
-    print(" 0) Quit")
     print(" 9) Back")
+    print(" 0) Quit")
     print("---------------------------------------------------------------------")
 def display_sub_menu_2():
     print("=========================== Cor-functions ===========================")
-    print("                         For janus materials                         ")
+    print("                         janus materials                         ")
     print(" 21) Calculate STH Efficiency    ")
     print(" 22) Generate STH map          ")
     print("---------------------------------------------------------------------")
-    print(" 0) Quit")
     print(" 9) Back")
+    print(" 0) Quit")
     print("---------------------------------------------------------------------")
 def display_sub_menu_3():
     print("=========================== Cor-functions ===========================")
-    print("                        For Z-scheme systems                         ")
+    print("                        Z-scheme systems                         ")
     print(" 31) Calculate STH Efficiency   ")
     print(" 32) Generate STH map          ")
     print("---------------------------------------------------------------------")
-    print(" 0) Quit")
     print(" 9) Back")
+    print(" 0) Quit")
     print("---------------------------------------------------------------------")
 def display_sub_menu_4():
     print("========================= Cor-functions =============================")
-    print("              For janus Z-scheme heterojunctions                     ")
+    print("              janus Z-scheme heterojunctions                     ")
     print(" 41) Calculate efficiency   ")
-    print(" 42) Generate STH map          ")
+    print(" 42) Generate STH map        ")
     print("---------------------------------------------------------------------")
-    print(" 0) Quit")
     print(" 9) Back")
+    print(" 0) Quit")
     print("---------------------------------------------------------------------")
 def main():
     """
@@ -319,9 +320,9 @@ def choice_Janus(choice):
 
     if choice == 1:
         print('Please enter the following parametersfor Janus materials:')
-        CBM = float(input('- Conduction Band Minimum(CBM) in eV:'))
-        VBM = float(input('- -  Valence Band maximum(VBM) in eV:'))
-        VLC = float(input('- Vacuum Level Difference (ΔΦ) in eV:'))
+        CBM = float(input('- Conduction Band Minimum (CBM) in eV:'))
+        VBM = float(input('- -  Valence Band maximum (VBM) in eV:'))
+        VLC = float(input('- -Vacuum Level Difference (ΔΦ) in eV:'))
         Eg = abs(CBM - VBM)
         xh = CBM + 4.44 + VLC
         xo = -5.67 - VBM
@@ -355,9 +356,9 @@ def choice_Janus(choice):
         # 在这里添加 Conventional photocatalysts 的逻辑
     elif choice == 2:
         print('Please enter the following parametersfor Janus materials:')
-        CBM = float(input('- Conduction Band Minimum(CBM) in eV:'))
-        VBM = float(input('- -  Valence Band maximum(VBM) in eV:'))
-        VLC = float(input('- Vacuum Level Difference (ΔΦ) in eV:'))
+        CBM = float(input('- Conduction Band Minimum (CBM) in eV:'))
+        VBM = float(input('- -  Valence Band maximum (VBM) in eV:'))
+        VLC = float(input('- -Vacuum Level Difference (ΔΦ) in eV:'))
         Eg = abs(CBM - VBM)
         xh = CBM + 4.44 + VLC
         xo = -5.67 - VBM
@@ -414,8 +415,8 @@ def choice_Z(choice):
         # 在这里添加 Conventional photocatalysts 的逻辑
     elif choice == 2:
         print('Please enter the following parametersfor Z-scheme systems:')
-        Eg1 = float(input('--The first single-layer bandgap(Eg1) in eV:'))
-        Eg2 = float(input('-The second single-layer bandgap(Eg1) in eV:'))
+        Eg1 = float(input('--The first single-layer bandgap (Eg1) in eV:'))
+        Eg2 = float(input('-The second single-layer bandgap (Eg2) in eV:'))
 
         if Eg1 + Eg2 < 1.23:
             console.print("[bold yellow]No  NO  NO[/bold yellow]")

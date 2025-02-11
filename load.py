@@ -1,15 +1,17 @@
+# -*- coding: utf-8 -*-
 import os
-import xlwt
 import xlrd
 import numpy as np
-import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.ticker import FixedLocator, FixedFormatter
+matplotlib.use('TkAgg')  # æˆ– 'Agg'ï¼ˆéäº¤äº’å¼åç«¯ï¼‰
 
 
-# Í¨ÓÃº¯Êı
+
+# é€šç”¨å‡½æ•°
 def load_data(file_path):
     workbook = xlrd.open_workbook(file_path)
     sheet = workbook.sheet_by_name("Sheet1")
@@ -78,7 +80,7 @@ def calculate_STH_JanusZ(l, f, h, n, Eg,E,VLC):
     return Egg,Eh,Ef
 
 
-# General ÀàĞÍConversion and Janus material
+# General ç±»å‹Conversion and Janus material
 class General:
     def __init__(self, file_path):
         self.l, self.f, self.h, self.n = load_data(file_path)
@@ -113,9 +115,9 @@ class General:
                 Xh2 = "%.2f" % Xh9
                 Xo2 = "%.2f" % Xo9
                 if VLC == 0:
-                    B = [pH, Xh2, Xo2, nabs2, ncu2, STH2]  # ÒªÊä³öµÄÖµ
+                    B = [pH, Xh2, Xo2, nabs2, ncu2, STH2]  # è¦è¾“å‡ºçš„å€¼
                 else:
-                    B = [pH, Xh2, Xo2, nabs2, ncu2, STH2,STH3]  # ÒªÊä³öµÄÖµ
+                    B = [pH, Xh2, Xo2, nabs2, ncu2, STH2,STH3]  # è¦è¾“å‡ºçš„å€¼
                 C.append(B)
         return C,PH, STH1
 
@@ -171,7 +173,7 @@ class General:
 
         Emax = np.max(self.l)
         emax = np.max(self.h)
-        # Çó×îĞ¡Ìİ¶È
+        # æ±‚æœ€å°æ¢¯åº¦
         DEmin = np.min(np.gradient(self.l))
         dEmin = np.min(np.gradient(self.h))
         r = []
@@ -251,28 +253,28 @@ class General:
 
         C = ax.contour(X, Y, Z, colors='black', linewidths=0)
 
-        cs = ax.contourf(X, Y, Z, 6, cmap=cmap)  # »­³öµÈ¸ßÍ¼
+        cs = ax.contourf(X, Y, Z, 6, cmap=cmap)  # ç”»å‡ºç­‰é«˜å›¾
 
         x_val, y_val = np.where(np.isclose(Z, max))
 
         ax.scatter(xh, xo, marker='*', c='black', s=300)
-        # #Ìí¼Ócolorbar
-        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)  # ¶ÔcolorbarµÄ´óĞ¡½øĞĞÉèÖÃ
-        # ticks = [5, 15, 25, 35]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        # tick_labels = ['5', '15', '25', '35']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        # #æ·»åŠ colorbar
+        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)  # å¯¹colorbarçš„å¤§å°è¿›è¡Œè®¾ç½®
+        # ticks = [5, 15, 25, 35]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        # tick_labels = ['5', '15', '25', '35']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
 
-        # ticks = [25,30,35]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        # tick_labels = ['25','30','35']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        # ticks = [25,30,35]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        # tick_labels = ['25','30','35']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
         # cbar.set_ticks(ticks)
         # cbar.set_ticklabels(tick_labels)
         #
-        # # Ê¹ÓÃFixedLocatorºÍFixedFormatter
+        # # ä½¿ç”¨FixedLocatorå’ŒFixedFormatter
         # cbar.locator = FixedLocator(ticks)
         # cbar.formatter = FixedFormatter(tick_labels)
 
         cbar.ax.invert_yaxis()
 
-        cbar.update_ticks()  # ÏÔÊ¾colorbarµÄ¿Ì¶ÈÖµ
+        cbar.update_ticks()  # æ˜¾ç¤ºcolorbarçš„åˆ»åº¦å€¼
 
         font3 = {'family': 'Times New Roman',
                  'weight': 'bold',
@@ -280,7 +282,7 @@ class General:
                  }
         ax.set_xlabel('\u03c7(H\u2082) (eV)', font3)
         ax.set_ylabel('\u03c7(O\u2082) (eV)', font3)
-        # ÉèÖÃÖ÷¿Ì¶ÈµÄ±êÇ©£¬ ´øÈëÖ÷¿Ì¶ÈĞı×ª½Ç¶ÈºÍ×ÖÌå´óĞ¡²ÎÊı
+        # è®¾ç½®ä¸»åˆ»åº¦çš„æ ‡ç­¾ï¼Œ å¸¦å…¥ä¸»åˆ»åº¦æ—‹è½¬è§’åº¦å’Œå­—ä½“å¤§å°å‚æ•°
         if VLC >= 1.72:
             ax.set_xticks([0, 0.4, 0.8, 1.2, 1.6, 2])
             ax.set_xticklabels(['0', '0.4', '0.8', '1.2', '1.6', '2'], fontsize=35, weight='bold',
@@ -308,8 +310,8 @@ class General:
             ax.set_yticks([0.1, 0.3, 0.5, 0.7, 0.9], minor=True)
             ax.tick_params(direction='in', which='both')
             ax.text(-0.02, -0.02, '0', fontsize=35, weight='bold', family='Times New Roman', ha='right', va='top')
-            ax.yaxis.set_tick_params(pad=10)  # ÕâÀïµÄÊı×Ö¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû
-            ax.xaxis.set_tick_params(pad=10)  # ÕâÀïµÄÊı×Ö¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû
+            ax.yaxis.set_tick_params(pad=10)  # è¿™é‡Œçš„æ•°å­—å¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´
+            ax.xaxis.set_tick_params(pad=10)  # è¿™é‡Œçš„æ•°å­—å¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´
             ax.tick_params(axis='x', which='major', width=3, length=8)
             ax.tick_params(axis='x', which='minor', width=2, length=4)
             ax.tick_params(axis='y', which='major', width=3, length=8)
@@ -323,8 +325,8 @@ class General:
             #                    family='Times New Roman')
             # ax.text(-0.02, -0.02, '0', fontsize=35, weight='bold', family='Times New Roman', ha='right', va='top')
             # cbar.ax.tick_params(width=3, length=8)
-            # ax.yaxis.set_tick_params(pad=10)  # ÕâÀïµÄÊı×Ö¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû
-            # ax.xaxis.set_tick_params(pad=10)  # ÕâÀïµÄÊı×Ö¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû
+            # ax.yaxis.set_tick_params(pad=10)  # è¿™é‡Œçš„æ•°å­—å¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´
+            # ax.xaxis.set_tick_params(pad=10)  # è¿™é‡Œçš„æ•°å­—å¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´
             # ax.set_xticks([0.2, 0.4, 1, 1.4, 1.8], minor=True)
             # ax.set_yticks([0.2, 0.4, 1, 1.4, 1.8], minor=True)
             # ax.tick_params(direction='in', which='both')
@@ -334,8 +336,8 @@ class General:
             # ax.tick_params(axis='y', which='minor', width=2, length=4)
 
         # plt.rcParams['figure.figsize']=(6,4)
-        plt.rcParams['savefig.dpi'] = 300  # Í¼Æ¬ÏñËØ
-        plt.rcParams['figure.dpi'] = 300  # ·Ö±æÂÊ
+        plt.rcParams['savefig.dpi'] = 300  # å›¾ç‰‡åƒç´ 
+        plt.rcParams['figure.dpi'] = 300  # åˆ†è¾¨ç‡
         # plt.gcf().subplots_adjust(left=0.05, top=0.91, bottom=0.09)
         plt.tight_layout()
         #
@@ -352,7 +354,7 @@ class General:
         Emax = np.max(self.l)
         # emin = min(h)
         emax = np.max(self.l)
-        # Çó×îĞ¡Ìİ¶È
+        # æ±‚æœ€å°æ¢¯åº¦
         DEmin = np.min(np.gradient(self.l))
         dEmin = np.min(np.gradient(self.h))
         Vlc = np.arange(0, 5.1, 0.01)
@@ -385,7 +387,7 @@ class General:
                             E = Eg1 + 0.6 - xo
                         elif xh < 0.2 and xo < 0.6:
                             E = Eg1 + 0.8 - xh - xo
-                        # ²åÖµ»ı·Ö
+                        # æ’å€¼ç§¯åˆ†
                         Eintp = np.arange(Eg1, DEmin + Emax, DEmin)
                         eintp = np.arange(E, emax + dEmin, dEmin)
                         Jintp = np.interp(Eintp, self.l, self.f)
@@ -426,7 +428,7 @@ class General:
         norm = mpl.colors.Normalize(vmin=min, vmax=max)
         # ax.rc('font', size=12, family='serif')
         mpl.rc('font', size=30, family='Times New Roman', weight='bold')
-        # ÔÚÍ¼ÖĞtext£¨£©,(0.68,0.35),(0.72,0.45),(0.61,0.21),
+        # åœ¨å›¾ä¸­textï¼ˆï¼‰,(0.68,0.35),(0.72,0.45),(0.61,0.21),
         # lev = [40,36,32,28,24,20,16,12]
         # lev.reverse()
         # manual_locations = [(1.7,0.8),(2,1.2),(2.2,1.4),(2.6,1.8),(3,2.2),(3.5,2.6)](1.5,0.6),
@@ -438,13 +440,13 @@ class General:
             x, y = label.get_position()
             label.set_position((x, y - 0.01))
         #
-        cs = ax.contourf(X, Y, Z, 7, cmap=cmap)  # »­³öµÈ¸ßÍ¼
+        cs = ax.contourf(X, Y, Z, 7, cmap=cmap)  # ç”»å‡ºç­‰é«˜å›¾
         #
         x_val, y_val = np.where(np.isclose(Z, max))
 
-        # ÔÚµÈ¸ßÍ¼ÉÏ»­³öÕâĞ©µã£¬Ê¹ÓÃĞÇĞÎ·ûºÅ
+        # åœ¨ç­‰é«˜å›¾ä¸Šç”»å‡ºè¿™äº›ç‚¹ï¼Œä½¿ç”¨æ˜Ÿå½¢ç¬¦å·
 
-        # ÔÚÍ¼ÖĞ±ê¼ÇZÖµÎª0.5µÄµã
+        # åœ¨å›¾ä¸­æ ‡è®°Zå€¼ä¸º0.5çš„ç‚¹
         for i in range(len(x_val)):
             # plt.annotate('*', (X[x_val[i], y_val[i]], Y[x_val[i], y_val[i]]), fontsize=20)
             ax.scatter(X[x_val[i], y_val[i]], Y[x_val[i], y_val[i]], marker='*', c='white', s=300)
@@ -452,25 +454,25 @@ class General:
             #          ha='center', fontsize=20)
 
         # ax.colorbars(label='correctSTH')
-        # #Ìí¼Ócolorbar
-        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)  # ¶ÔcolorbarµÄ´óĞ¡½øĞĞÉèÖÃ
-        ticks = [5, 10, 15, 20, 25, 30, 35, 40]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        tick_labels = ['5', '10', '15', '20', '25', '30', '35', '40']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        # #æ·»åŠ colorbar
+        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)  # å¯¹colorbarçš„å¤§å°è¿›è¡Œè®¾ç½®
+        ticks = [5, 10, 15, 20, 25, 30, 35, 40]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        tick_labels = ['5', '10', '15', '20', '25', '30', '35', '40']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
 
         cbar.set_ticks(ticks)
         cbar.set_ticklabels(tick_labels)
         cbar.ax.invert_yaxis()
-        # Ê¹ÓÃFixedLocatorºÍFixedFormatter
+        # ä½¿ç”¨FixedLocatorå’ŒFixedFormatter
         cbar.locator = FixedLocator(ticks)
         cbar.formatter = FixedFormatter(tick_labels)
 
         # cbar.set_ticks([10,15,20,25,30,35,max])
         # cbar.set_ticklabels(['10', '15', '20', '25', '30','35','38.18'])
-        # cbar.ax.set_title('¦Ç¡¯$_{STH}$ $\%$',fontsize=40,weight='bold', family='Times New Roman',pad=15)
-        cbar.update_ticks()  # ÏÔÊ¾colorbarµÄ¿Ì¶ÈÖµ
-        # ticks = cbar.get_ticks()  # »ñÈ¡µ±Ç°µÄ¿Ì¶È±êÇ©
-        # new_ticks = ticks +0  # ÏòÉÏÒÆ¶¯2¸öµ¥Î»
-        # cbar.set_ticks(new_ticks)  # ÉèÖÃĞÂµÄ¿Ì¶È±êÇ©
+        # cbar.ax.set_title('Î·â€™$_{STH}$ $\%$',fontsize=40,weight='bold', family='Times New Roman',pad=15)
+        cbar.update_ticks()  # æ˜¾ç¤ºcolorbarçš„åˆ»åº¦å€¼
+        # ticks = cbar.get_ticks()  # è·å–å½“å‰çš„åˆ»åº¦æ ‡ç­¾
+        # new_ticks = ticks +0  # å‘ä¸Šç§»åŠ¨2ä¸ªå•ä½
+        # cbar.set_ticks(new_ticks)  # è®¾ç½®æ–°çš„åˆ»åº¦æ ‡ç­¾
 
         font3 = {'family': 'Times New Roman',
                  'weight': 'bold',
@@ -478,7 +480,7 @@ class General:
                  }
         ax.set_xlabel('\u0394\u03A6 (eV)', font3)
         ax.set_ylabel('Band gap (eV)', font3)
-        # ÉèÖÃÖ÷¿Ì¶ÈµÄ±êÇ©£¬ ´øÈëÖ÷¿Ì¶ÈĞı×ª½Ç¶ÈºÍ×ÖÌå´óĞ¡²ÎÊı
+        # è®¾ç½®ä¸»åˆ»åº¦çš„æ ‡ç­¾ï¼Œ å¸¦å…¥ä¸»åˆ»åº¦æ—‹è½¬è§’åº¦å’Œå­—ä½“å¤§å°å‚æ•°
         ax.set_xticks([0, 1, 2, 3, 4, 5])
         ax.set_xticklabels(['0', '1', '2', '3', '4', '5'], fontsize=35, weight='bold', family='Times New Roman')
         ax.set_yticks([0, 0.5, 1, 1.5, 2, 2.5, 3])
@@ -489,8 +491,8 @@ class General:
         ax.tick_params(axis='x', which='major', width=3, length=8)
         ax.tick_params(axis='y', which='major', width=3, length=8)
         # plt.rcParams['figure.figsize']=(6,4)
-        plt.rcParams['savefig.dpi'] = 300  # Í¼Æ¬ÏñËØ
-        plt.rcParams['figure.dpi'] = 300  # ·Ö±æÂÊ
+        plt.rcParams['savefig.dpi'] = 300  # å›¾ç‰‡åƒç´ 
+        plt.rcParams['figure.dpi'] = 300  # åˆ†è¾¨ç‡
         # plt.gcf().subplots_adjust(left=0.05, top=0.91, bottom=0.09)
         plt.tight_layout()
         file_path = os.path.join(s, "BandGap_Map.png")
@@ -509,7 +511,7 @@ class General:
 
         # print(names1)
         emax = np.max(self.h)
-        # Çó×îĞ¡Ìİ¶È
+        # æ±‚æœ€å°æ¢¯åº¦
         DEmin = np.min(np.gradient(self.l))
         dEmin = np.min(np.gradient(self.h))
         r = []
@@ -541,8 +543,8 @@ class General:
                 elif xh < 0.2 and xo < 0.6:
                     E = Eg1 + 0.8 - xh - xo
 
-                Eintp = np.arange(Eg1, DEmin + emax, DEmin)  # ÎŞ³ı
-                eintp = np.arange(E, emax + dEmin, dEmin)  # ÓĞ³ı
+                Eintp = np.arange(Eg1, DEmin + emax, DEmin)  # æ— é™¤
+                eintp = np.arange(E, emax + dEmin, dEmin)  # æœ‰é™¤
                 Jintp = np.interp(Eintp, self.l, self.f)
                 jintp = np.interp(eintp, self.h, self.n)
                 fintp = np.interp(Eintp, self.h, self.n)
@@ -582,15 +584,15 @@ class General:
         norm = mpl.colors.Normalize(vmin=min, vmax=max)
         # ax.rc('font', size=12, family='serif')
         mpl.rc('font', size=40, family='Times New Roman', weight='bold')
-        cs = ax.contourf(X, Y, Z, cmap=cmap)  # »­³öµÈ¸ßÍ¼
+        cs = ax.contourf(X, Y, Z, cmap=cmap)  # ç”»å‡ºç­‰é«˜å›¾
 
         x_val, y_val = np.where(np.isclose(Z, max))
         # print(x_val)
         # print(y_val)
 
-        # ÔÚÍ¼ÖĞ±ê¼ÇZÖµÎª0.5µÄµã\u2032
+        # åœ¨å›¾ä¸­æ ‡è®°Zå€¼ä¸º0.5çš„ç‚¹\u2032
         # title = ["pH", '\u03c7h', '\u03c7o', "\u03B7abs", "\u03B7cu", "\u03B7STH", '\u03B7\u2032STH']
-        # plt.annotate(f'({C:.2f}, {V:.2f})', (C, V), textcoords="offset points", xytext=(0, -20),#×ø±ê
+        # plt.annotate(f'({C:.2f}, {V:.2f})', (C, V), textcoords="offset points", xytext=(0, -20),#åæ ‡
         #              ha='center', fontsize=20)
         if VLC == 0:
 
@@ -621,24 +623,24 @@ class General:
             #              ha='center', fontsize=25)
 
         # ax.colorbars(label='correctSTH')
-        # #Ìí¼Ócolorbar
-        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)  # ¶ÔcolorbarµÄ´óĞ¡½øĞĞÉèÖÃ
-        # ticks = [1, 3, 6, 9, 12, 15]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        # tick_labels = ['1', '3', '6', '9', '12', '15']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        # #æ·»åŠ colorbar
+        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)  # å¯¹colorbarçš„å¤§å°è¿›è¡Œè®¾ç½®
+        # ticks = [1, 3, 6, 9, 12, 15]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        # tick_labels = ['1', '3', '6', '9', '12', '15']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
         # cbar.set_ticks(ticks)
         # cbar.set_ticklabels(tick_labels)
         #
-        # # Ê¹ÓÃFixedLocatorºÍFixedFormatter
+        # # ä½¿ç”¨FixedLocatorå’ŒFixedFormatter
         # cbar.locator = FixedLocator(ticks)
         # cbar.formatter = FixedFormatter(tick_labels)
         cbar.ax.invert_yaxis()
         # cbar.set_ticks([10,15,20,25,30,35,max])
         # cbar.set_ticklabels(['10', '15', '20', '25', '30','35','38.18'])
-        # cbar.ax.set_title('¦Ç¡¯$_{STH}$ $\%$',fontsize=40,weight='bold', family='Times New Roman',pad=15)
-        cbar.update_ticks()  # ÏÔÊ¾colorbarµÄ¿Ì¶ÈÖµ
-        # ticks = cbar.get_ticks()  # »ñÈ¡µ±Ç°µÄ¿Ì¶È±êÇ©
-        # new_ticks = ticks +0  # ÏòÉÏÒÆ¶¯2¸öµ¥Î»
-        # cbar.set_ticks(new_ticks)  # ÉèÖÃĞÂµÄ¿Ì¶È±êÇ©
+        # cbar.ax.set_title('Î·â€™$_{STH}$ $\%$',fontsize=40,weight='bold', family='Times New Roman',pad=15)
+        cbar.update_ticks()  # æ˜¾ç¤ºcolorbarçš„åˆ»åº¦å€¼
+        # ticks = cbar.get_ticks()  # è·å–å½“å‰çš„åˆ»åº¦æ ‡ç­¾
+        # new_ticks = ticks +0  # å‘ä¸Šç§»åŠ¨2ä¸ªå•ä½
+        # cbar.set_ticks(new_ticks)  # è®¾ç½®æ–°çš„åˆ»åº¦æ ‡ç­¾
 
         font3 = {'family': 'Times New Roman',
                  'weight': 'bold',
@@ -646,15 +648,15 @@ class General:
                  }
         ax.set_xlabel('CBM (eV)', font3)
         ax.set_ylabel('VBM (eV)', font3)
-        # ÉèÖÃÖ÷¿Ì¶ÈµÄ±êÇ©£¬ ´øÈëÖ÷¿Ì¶ÈĞı×ª½Ç¶ÈºÍ×ÖÌå´óĞ¡²ÎÊı
+        # è®¾ç½®ä¸»åˆ»åº¦çš„æ ‡ç­¾ï¼Œ å¸¦å…¥ä¸»åˆ»åº¦æ—‹è½¬è§’åº¦å’Œå­—ä½“å¤§å°å‚æ•°
         ax.set_xticks([-4.44, -4.24, -4.04, -3.84, -3.64, -3.44])
         ax.set_xticklabels(['-4.44', '-4.24', '-4.04', '-3.84', '-3.64', '-3.44'], fontsize=35, weight='bold',
                            family='Times New Roman')
         ax.set_yticks([-6.67, -6.27, -5.97, -5.67])
         ax.set_yticklabels([ '', '-6.27', '-5.97', '-5.67'], fontsize=35, weight='bold',
                            family='Times New Roman')
-        ax.yaxis.set_tick_params(pad=10)  # ÕâÀïµÄÊı×Ö¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû
-        ax.xaxis.set_tick_params(pad=10)  # ÕâÀïµÄÊı×Ö¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû
+        ax.yaxis.set_tick_params(pad=10)  # è¿™é‡Œçš„æ•°å­—å¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´
+        ax.xaxis.set_tick_params(pad=10)  # è¿™é‡Œçš„æ•°å­—å¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´
         cbar.ax.tick_params(width=3, length=8)
         # ax.set_xticks([0.2, 0.4, 1, 1.4, 1.8], minor=True)
         # ax.set_yticks([0.2, 0.4, 1, 1.4, 1.8], minor=True)
@@ -664,8 +666,8 @@ class General:
         ax.tick_params(axis='y', which='major', width=3, length=8)
         # ax.tick_params(axis='y', which='minor', width=2, length=4)
         # plt.rcParams['figure.figsize']=(6,4)
-        plt.rcParams['savefig.dpi'] = 300  # Í¼Æ¬ÏñËØ
-        plt.rcParams['figure.dpi'] = 300  # ·Ö±æÂÊ
+        plt.rcParams['savefig.dpi'] = 300  # å›¾ç‰‡åƒç´ 
+        plt.rcParams['figure.dpi'] = 300  # åˆ†è¾¨ç‡
         # plt.gcf().subplots_adjust(left=0.05, top=0.91, bottom=0.09)
 
         plt.tight_layout()
@@ -680,7 +682,7 @@ class General:
 
     def CBM_VBM_J(self,VLC, C, V, s):
         emax = np.max(self.h)
-        # Çó×îĞ¡Ìİ¶È
+        # æ±‚æœ€å°æ¢¯åº¦
         DEmin = np.min(np.gradient(self.l))
         dEmin = np.min(np.gradient(self.h))
         r = []
@@ -725,8 +727,8 @@ class General:
                     if E < 0.31:
                         E = 0.31
 
-                Eintp = np.arange(Eg1, DEmin + emax, DEmin)  # ÎŞ³ı
-                eintp = np.arange(E, emax + dEmin, dEmin)  # ÓĞ³ı
+                Eintp = np.arange(Eg1, DEmin + emax, DEmin)  # æ— é™¤
+                eintp = np.arange(E, emax + dEmin, dEmin)  # æœ‰é™¤
                 Jintp = np.interp(Eintp, self.l, self.f)
                 jintp = np.interp(eintp, self.h, self.n)
                 fintp = np.interp(Eintp, self.h, self.n)
@@ -768,24 +770,24 @@ class General:
         norm = mpl.colors.Normalize(vmin=min1, vmax=max1)
         # ax.rc('font', size=12, family='serif')
         mpl.rc('font', size=40, family='Times New Roman', weight='bold')
-        cs = ax.contourf(X, Y, Z, 6, cmap=cmap)  # »­³öµÈ¸ßÍ¼
+        cs = ax.contourf(X, Y, Z, 6, cmap=cmap)  # ç”»å‡ºç­‰é«˜å›¾
 
         x_val, y_val = np.where(np.isclose(Z, max1))
 
         ax.scatter(C, V, marker='*', c='white', s=500)
         #
         # ax.colorbars(label='correctSTH')
-        # #Ìí¼Ócolorbar
-        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)  # ¶ÔcolorbarµÄ´óĞ¡½øĞĞÉèÖÃ
-        ticks = [5, 15, 25, 35]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        tick_labels = ['5', '15', '25', '35']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        # #æ·»åŠ colorbar
+        cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)  # å¯¹colorbarçš„å¤§å°è¿›è¡Œè®¾ç½®
+        ticks = [5, 15, 25, 35]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        tick_labels = ['5', '15', '25', '35']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
 
-        # ticks = [25,30,35]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        # tick_labels = ['25','30','35']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        # ticks = [25,30,35]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        # tick_labels = ['25','30','35']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
         cbar.set_ticks(ticks)
         cbar.set_ticklabels(tick_labels)
 
-        # Ê¹ÓÃFixedLocatorºÍFixedFormatter
+        # ä½¿ç”¨FixedLocatorå’ŒFixedFormatter
         cbar.locator = FixedLocator(ticks)
         cbar.formatter = FixedFormatter(tick_labels)
 
@@ -794,11 +796,11 @@ class General:
         cbar.ax.invert_yaxis()
         # cbar.set_ticks([10,15,20,25,30,35,max])
         # cbar.set_ticklabels(['10', '15', '20', '25', '30','35','38.18'])
-        # cbar.ax.set_title('¦Ç¡¯$_{STH}$ $\%$',fontsize=40,weight='bold', family='Times New Roman',pad=15)
-        cbar.update_ticks()  # ÏÔÊ¾colorbarµÄ¿Ì¶ÈÖµ
-        # ticks = cbar.get_ticks()  # »ñÈ¡µ±Ç°µÄ¿Ì¶È±êÇ©
-        # new_ticks = ticks +0  # ÏòÉÏÒÆ¶¯2¸öµ¥Î»
-        # cbar.set_ticks(new_ticks)  # ÉèÖÃĞÂµÄ¿Ì¶È±êÇ©
+        # cbar.ax.set_title('Î·â€™$_{STH}$ $\%$',fontsize=40,weight='bold', family='Times New Roman',pad=15)
+        cbar.update_ticks()  # æ˜¾ç¤ºcolorbarçš„åˆ»åº¦å€¼
+        # ticks = cbar.get_ticks()  # è·å–å½“å‰çš„åˆ»åº¦æ ‡ç­¾
+        # new_ticks = ticks +0  # å‘ä¸Šç§»åŠ¨2ä¸ªå•ä½
+        # cbar.set_ticks(new_ticks)  # è®¾ç½®æ–°çš„åˆ»åº¦æ ‡ç­¾
 
         font3 = {'family': 'Times New Roman',
                  'weight': 'bold',
@@ -806,7 +808,7 @@ class General:
                  }
         ax.set_xlabel('CBM (eV)', font3)
         ax.set_ylabel('VBM (eV)', font3)
-        # ÉèÖÃÖ÷¿Ì¶ÈµÄ±êÇ©£¬ ´øÈëÖ÷¿Ì¶ÈĞı×ª½Ç¶ÈºÍ×ÖÌå´óĞ¡²ÎÊı
+        # è®¾ç½®ä¸»åˆ»åº¦çš„æ ‡ç­¾ï¼Œ å¸¦å…¥ä¸»åˆ»åº¦æ—‹è½¬è§’åº¦å’Œå­—ä½“å¤§å°å‚æ•°
         ax.set_xticks([-4.44, -4.94, -4.44, -3.94, -3.44])
         ax.set_xticklabels(['-4.44', '-4.94', '-4.44', '-3.94', ''], fontsize=35, weight='bold',
                            family='Times New Roman')
@@ -822,8 +824,8 @@ class General:
         ax.tick_params(axis='y', which='major', width=3, length=8)
         ax.tick_params(axis='y', which='minor', width=2, length=4)
 
-        ax.yaxis.set_tick_params(pad=10)  # ÕâÀïµÄÊı×Ö¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû
-        ax.xaxis.set_tick_params(pad=10)  # ÕâÀïµÄÊı×Ö¿ÉÒÔ¸ù¾İĞèÒªµ÷Õû
+        ax.yaxis.set_tick_params(pad=10)  # è¿™é‡Œçš„æ•°å­—å¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´
+        ax.xaxis.set_tick_params(pad=10)  # è¿™é‡Œçš„æ•°å­—å¯ä»¥æ ¹æ®éœ€è¦è°ƒæ•´
         cbar.ax.tick_params(width=3, length=8)
         # ax.set_xticks([0.2, 0.4, 1, 1.4, 1.8], minor=True)
         # ax.set_yticks([0.2, 0.4, 1, 1.4, 1.8], minor=True)
@@ -833,8 +835,8 @@ class General:
         ax.tick_params(axis='y', which='major', width=3, length=8)
         # ax.tick_params(axis='y', which='minor', width=2, length=4)
         # plt.rcParams['figure.figsize']=(6,4)
-        plt.rcParams['savefig.dpi'] = 300  # Í¼Æ¬ÏñËØ
-        plt.rcParams['figure.dpi'] = 300  # ·Ö±æÂÊ
+        plt.rcParams['savefig.dpi'] = 300  # å›¾ç‰‡åƒç´ 
+        plt.rcParams['figure.dpi'] = 300  # åˆ†è¾¨ç‡
         # plt.gcf().subplots_adjust(left=0.05, top=0.91, bottom=0.09)
 
         plt.tight_layout()
@@ -851,15 +853,15 @@ class General:
 
 
 
-        # Á½¸öÒ»Î¬ÁĞ±íºÍÒ»¸ö¶şÎ¬ÁĞ±í
+        # ä¸¤ä¸ªä¸€ç»´åˆ—è¡¨å’Œä¸€ä¸ªäºŒç»´åˆ—è¡¨
         list1 = [1, 2, 3]
         list2 = ['a', 'b', 'c']
         list3 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
-        # ½«Êı¾İ±£´æµ½datÎÄ¼ş
+        # å°†æ•°æ®ä¿å­˜åˆ°datæ–‡ä»¶
 
         # title = ["pH", '\u03c7h', '\u03c7o', "\u03B7abs", "\u03B7cu", "\u03B7STH", '\u03B7\u2032STH']
-        # ½«Êı¾İ±£´æµ½×ÓÎÄ¼ş¼ĞÖĞµÄdatÎÄ¼ş
+        # å°†æ•°æ®ä¿å­˜åˆ°å­æ–‡ä»¶å¤¹ä¸­çš„datæ–‡ä»¶
         file_path = os.path.join(s, "STH Efficiency vs HER and OER.dat")
         with open(file_path, "w") as file:
             # "{:<5}".format
@@ -879,7 +881,7 @@ class General:
 
     def Save_CBM_VBM(self,C, V, Z, s, g):
 
-        # ½«Êı¾İ±£´æµ½×ÓÎÄ¼ş¼ĞÖĞµÄdatÎÄ¼ş
+        # å°†æ•°æ®ä¿å­˜åˆ°å­æ–‡ä»¶å¤¹ä¸­çš„datæ–‡ä»¶
         file_path = os.path.join(s, "STH Efficiency vs CBM and VBM.dat")
         with open(file_path, "w") as file:
             if g == 0:
@@ -898,7 +900,7 @@ class General:
 
     def Save_Delta_Eg(self,VLC, Eg, STH, s):
 
-        # ½«Êı¾İ±£´æµ½×ÓÎÄ¼ş¼ĞÖĞµÄdatÎÄ¼ş
+        # å°†æ•°æ®ä¿å­˜åˆ°å­æ–‡ä»¶å¤¹ä¸­çš„datæ–‡ä»¶
         file_path = os.path.join(s, "STH Efficiency vs Eg and $\Delta\Phi$.dat")
         with open(file_path, "w") as file:
             # file.write(f"VLC\t\t\tEg\t\t\tSTH%\n")
@@ -910,9 +912,9 @@ class General:
                 file.write('\n')
 
 
-# Janus ÀàĞÍ
+# Janus ç±»å‹
 
-# Heterojunction_Z ÀàĞÍ
+# Heterojunction_Z ç±»å‹
 class Heterojunction_Z:
     def __init__(self, file_path):
         self.l, self.f, self.h, self.n = load_data(file_path)
@@ -925,12 +927,12 @@ class Heterojunction_Z:
         return STH
 
     def plot(self, save_path):
-        # Heterojunction_Z ÀàĞÍµÄ³öÍ¼Âß¼­
+        # Heterojunction_Z ç±»å‹çš„å‡ºå›¾é€»è¾‘
         pass
 
     def Z_STH(self,s):
         emax = np.max(self.h)
-        # Çó×îĞ¡Ìİ¶È
+        # æ±‚æœ€å°æ¢¯åº¦
         DEmin = np.min(np.gradient(self.l))
         dEmin = np.min(np.gradient(self.h))
         mpl.rcParams.update(mpl.rcParamsDefault)
@@ -956,8 +958,8 @@ class Heterojunction_Z:
                     E1 = max(i, j)
                     if E1 < 0.615:
                         E1 = 0.615
-                    # Eintp = np.arange(Eg1 , DEmin+Emax,DEmin)#ÎŞ³ı
-                    eintp = np.arange(E1, emax + dEmin, dEmin)  # ÓĞ³ı
+                    # Eintp = np.arange(Eg1 , DEmin+Emax,DEmin)#æ— é™¤
+                    eintp = np.arange(E1, emax + dEmin, dEmin)  # æœ‰é™¤
                     # Jintp = np.interp(Eintp, l, f)
                     jintp = np.interp(eintp, self.h, self.n)
                     # fintp = np.interp(Eintp, h, n)
@@ -998,7 +1000,7 @@ class Heterojunction_Z:
 
         C = ax.contour(X, Y, Z, colors='black', linewidths=0)
 
-        cs = ax.contourf(X, Y, Z, 5, cmap=cmap)  # »­³öµÈ¸ßÍ¼
+        cs = ax.contourf(X, Y, Z, 5, cmap=cmap)  # ç”»å‡ºç­‰é«˜å›¾
 
         x_val, y_val = np.where(np.isclose(Z, max1))
         # for i in range(len(x_val)):
@@ -1009,21 +1011,21 @@ class Heterojunction_Z:
         x_val, y_val = np.where(np.isclose(Z, max1))
 
         points = []
-        # ÔÚÍ¼ÖĞ±ê¼ÇZÖµÎª0.5µÄµã
+        # åœ¨å›¾ä¸­æ ‡è®°Zå€¼ä¸º0.5çš„ç‚¹
         for i in range(len(x_val)):
             ax.scatter(X[x_val[i], y_val[i]], Y[x_val[i], y_val[i]], marker='*', c='black', s=20)
 
         cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)
 
-        ticks = [5, 10, 15, 20, 25, 30, 35]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        tick_labels = ['5', '10', '15', '20', '25', '30', '35']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        ticks = [5, 10, 15, 20, 25, 30, 35]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        tick_labels = ['5', '10', '15', '20', '25', '30', '35']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
 
-        # ticks = [25,30,35]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        # tick_labels = ['25','30','35']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        # ticks = [25,30,35]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        # tick_labels = ['25','30','35']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
         cbar.set_ticks(ticks)
         cbar.set_ticklabels(tick_labels)
 
-        # Ê¹ÓÃFixedLocatorºÍFixedFormatter
+        # ä½¿ç”¨FixedLocatorå’ŒFixedFormatter
         cbar.locator = FixedLocator(ticks)
         cbar.formatter = FixedFormatter(tick_labels)
 
@@ -1031,7 +1033,7 @@ class Heterojunction_Z:
 
         cbar.ax.invert_yaxis()
 
-        cbar.update_ticks()  # ÏÔÊ¾colorbarµÄ¿Ì¶ÈÖµ
+        cbar.update_ticks()  # æ˜¾ç¤ºcolorbarçš„åˆ»åº¦å€¼
 
         font3 = {'family': 'Times New Roman',
                  'weight': 'bold',
@@ -1053,8 +1055,8 @@ class Heterojunction_Z:
         ax.tick_params(axis='y', which='major', width=3, length=8)
         ax.tick_params(axis='y', which='minor', width=2, length=4)
 
-        plt.rcParams['savefig.dpi'] = 300  # Í¼Æ¬ÏñËØ
-        plt.rcParams['figure.dpi'] = 300  # ·Ö±æÂÊ
+        plt.rcParams['savefig.dpi'] = 300  # å›¾ç‰‡åƒç´ 
+        plt.rcParams['figure.dpi'] = 300  # åˆ†è¾¨ç‡
         # plt.gcf().subplots_adjust(left=0.05, top=0.91, bottom=0.09)
         plt.tight_layout()
         #
@@ -1065,7 +1067,7 @@ class Heterojunction_Z:
 
     def Save_Z(self,Eg1, Eg2, Z, s):
 
-        # ½«Êı¾İ±£´æµ½×ÓÎÄ¼ş¼ĞÖĞµÄdatÎÄ¼ş
+        # å°†æ•°æ®ä¿å­˜åˆ°å­æ–‡ä»¶å¤¹ä¸­çš„datæ–‡ä»¶
         file_path = os.path.join(s, "STH Efficiency vs Eg1 and Eg2.dat")
         with open(file_path, "w") as file:
 
@@ -1080,7 +1082,7 @@ class Heterojunction_Z:
 
         pass
 
-# Janus_Z ÀàĞÍ
+# Janus_Z ç±»å‹
 class Janus_Z:
     def __init__(self, file_path):
         self.l, self.f, self.h, self.n = load_data(file_path)
@@ -1110,7 +1112,7 @@ class Janus_Z:
                 STH3 = "%.2f" % (correctedSTH * 100)
                 Xh2 = "%.2f" % Xh9
                 Xo2 = "%.2f" % Xo9
-                B = [pH, Xh2, Xo2, nabs2, ncu2, STH2, STH3]  # ÒªÊä³öµÄÖµ
+                B = [pH, Xh2, Xo2, nabs2, ncu2, STH2, STH3]  # è¦è¾“å‡ºçš„å€¼
 
                 C.append(B)
         return C,PH,STH1
@@ -1125,16 +1127,16 @@ class Janus_Z:
             E = Eg + 0.8 - Xh9 - Xo9
         return max(E, 0.31)
     def plot(self, save_path):
-        # Janus_Z ÀàĞÍµÄ³öÍ¼Âß¼­
+        # Janus_Z ç±»å‹çš„å‡ºå›¾é€»è¾‘
         pass
     def Janus_Z_STH(self,s,VLC,xh,xo):
         emax = np.max(self.h)
-        # Çó×îĞ¡Ìİ¶È
+        # æ±‚æœ€å°æ¢¯åº¦
         DEmin = np.min(np.gradient(self.l))
         dEmin = np.min(np.gradient(self.h))
         Emax = np.max(self.l)
         emax = np.max(self.h)
-        # Çó×îĞ¡Ìİ¶È
+        # æ±‚æœ€å°æ¢¯åº¦
         DEmin = np.min(np.gradient(self.l))
         dEmin = np.min(np.gradient(self.h))
         mpl.rcParams.update(mpl.rcParamsDefault)
@@ -1222,7 +1224,7 @@ class Janus_Z:
 
         C = ax.contour(X, Y, Z, colors='black', linewidths=0)
 
-        cs = ax.contourf(X, Y, Z, 5, cmap=cmap)  # »­³öµÈ¸ßÍ¼
+        cs = ax.contourf(X, Y, Z, 5, cmap=cmap)  # ç”»å‡ºç­‰é«˜å›¾
 
         x_val, y_val = np.where(np.isclose(Z, max1))
         # for i in range(len(x_val)):
@@ -1233,21 +1235,21 @@ class Janus_Z:
         x_val, y_val = np.where(np.isclose(Z, max1))
 
         points = []
-        # ÔÚÍ¼ÖĞ±ê¼ÇZÖµÎª0.5µÄµã
+        # åœ¨å›¾ä¸­æ ‡è®°Zå€¼ä¸º0.5çš„ç‚¹
         for i in range(len(x_val)):
             ax.scatter(X[x_val[i], y_val[i]], Y[x_val[i], y_val[i]], marker='*', c='black', s=20)
 
         cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)
 
-        ticks = [5, 10, 15, 20, 25, 30, 35]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        tick_labels = ['5', '10', '15', '20', '25', '30', '35']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        ticks = [5, 10, 15, 20, 25, 30, 35]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        tick_labels = ['5', '10', '15', '20', '25', '30', '35']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
 
-        # ticks = [25,30,35]  # ¿Ì¶ÈÖµ£¬°üÀ¨×î´óÖµ
-        # tick_labels = ['25','30','35']  # ¶ÔÓ¦µÄ¿Ì¶È±êÇ©
+        # ticks = [25,30,35]  # åˆ»åº¦å€¼ï¼ŒåŒ…æ‹¬æœ€å¤§å€¼
+        # tick_labels = ['25','30','35']  # å¯¹åº”çš„åˆ»åº¦æ ‡ç­¾
         cbar.set_ticks(ticks)
         cbar.set_ticklabels(tick_labels)
 
-        # Ê¹ÓÃFixedLocatorºÍFixedFormatter
+        # ä½¿ç”¨FixedLocatorå’ŒFixedFormatter
         cbar.locator = FixedLocator(ticks)
         cbar.formatter = FixedFormatter(tick_labels)
 
@@ -1255,7 +1257,7 @@ class Janus_Z:
 
         cbar.ax.invert_yaxis()
 
-        cbar.update_ticks()  # ÏÔÊ¾colorbarµÄ¿Ì¶ÈÖµ
+        cbar.update_ticks()  # æ˜¾ç¤ºcolorbarçš„åˆ»åº¦å€¼
 
         font3 = {'family': 'Times New Roman',
                  'weight': 'bold',
@@ -1277,8 +1279,8 @@ class Janus_Z:
         ax.tick_params(axis='y', which='major', width=3, length=8)
         ax.tick_params(axis='y', which='minor', width=2, length=4)
 
-        plt.rcParams['savefig.dpi'] = 300  # Í¼Æ¬ÏñËØ
-        plt.rcParams['figure.dpi'] = 300  # ·Ö±æÂÊ
+        plt.rcParams['savefig.dpi'] = 300  # å›¾ç‰‡åƒç´ 
+        plt.rcParams['figure.dpi'] = 300  # åˆ†è¾¨ç‡
         # plt.gcf().subplots_adjust(left=0.05, top=0.91, bottom=0.09)
         plt.tight_layout()
         #
@@ -1289,7 +1291,7 @@ class Janus_Z:
 
     def Save_JanusZ(self, Eg1, Eg2, Z, s):
 
-        # ½«Êı¾İ±£´æµ½×ÓÎÄ¼ş¼ĞÖĞµÄdatÎÄ¼ş
+        # å°†æ•°æ®ä¿å­˜åˆ°å­æ–‡ä»¶å¤¹ä¸­çš„datæ–‡ä»¶
         file_path = os.path.join(s, "STH Efficiency vs Eg1 and Eg2.dat")
         with open(file_path, "w") as file:
 
