@@ -7,7 +7,6 @@ import os
 import load
 # 创建 Console 对象
 console = Console()
-print("111")
 # 主菜单
 def display_main_menu():
     """
@@ -66,7 +65,7 @@ def display_sub_menu_1():
     print("=========================== Cor-functions ===========================")
     print("                   conventional photocatalysts                   ")
     print(" 11) Calculate STH efficiency    ")
-    print(" 12) Generate STH map          ")
+    print(" 12) Generate STH efficiency map          ")
     print("---------------------------------------------------------------------")
     print(" 9) Back")
     print(" 0) Quit")
@@ -74,8 +73,8 @@ def display_sub_menu_1():
 def display_sub_menu_2():
     print("=========================== Cor-functions ===========================")
     print("                         janus materials                         ")
-    print(" 21) Calculate STH Efficiency    ")
-    print(" 22) Generate STH map          ")
+    print(" 21) Calculate STH efficiency    ")
+    print(" 22) Generate STH efficiency map          ")
     print("---------------------------------------------------------------------")
     print(" 9) Back")
     print(" 0) Quit")
@@ -83,8 +82,8 @@ def display_sub_menu_2():
 def display_sub_menu_3():
     print("=========================== Cor-functions ===========================")
     print("                        Z-scheme systems                         ")
-    print(" 31) Calculate STH Efficiency   ")
-    print(" 32) Generate STH map          ")
+    print(" 31) Calculate STH efficiency   ")
+    print(" 32) Generate STH efficiency map          ")
     print("---------------------------------------------------------------------")
     print(" 9) Back")
     print(" 0) Quit")
@@ -92,8 +91,8 @@ def display_sub_menu_3():
 def display_sub_menu_4():
     print("========================= Cor-functions =============================")
     print("              janus Z-scheme heterojunctions                     ")
-    print(" 41) Calculate efficiency   ")
-    print(" 42) Generate STH map        ")
+    print(" 41) Calculate STH efficiency   ")
+    print(" 42) Generate STH efficiency map        ")
     print("---------------------------------------------------------------------")
     print(" 9) Back")
     print(" 0) Quit")
@@ -447,16 +446,18 @@ def choice_Z(choice):
 def choice_Janus_Z(choice):
     Load = load.Janus_Z(r'1.xls')
     s = "Janus Z-scheme"
+    if not os.path.exists(s):
+        os.makedirs(s)
     console.print("[bold yellow]You selected: Janus Z-scheme calculate[/bold yellow]")
 
 
     if choice == 1:
         print('Please enter the following parametersfor Janus Z-scheme:')
-        Eg1 = float(input('- - - - - -The first single-layer bandgap in eV:'))
-        Eg2 = float(input('- - - - - The second single-layer bandgap in eV:'))
-        VLC = float(input('- - - - - - -Vacuum level difference (ΔΦ) in eV:'))
-        xh = float(input('-Hydrogen evolution reaction in eV:'))
-        xo = float(input('- -Oxygen evolution reaction in eV:'))
+        Eg1 = float(input('- -The first single-layer bandgap in eV:'))
+        Eg2 = float(input('- The second single-layer bandgap in eV:'))
+        VLC = float(input('- - -Vacuum level difference (ΔΦ) in eV:'))
+        xh = float(input('- - - -Hydrogen evolution reaction in eV:'))
+        xo = float(input('- - - - -Oxygen evolution reaction in eV:'))
         Eg = max(Eg1, Eg2)
         if xh < 0 or xo < 0:
             console.print("[bold yellow]No  NO  NO[/bold yellow]")
@@ -495,8 +496,8 @@ def choice_Janus_Z(choice):
             console.print("[bold yellow]No  NO  NO[/bold yellow]")
             return
         D, E, F = Load.calculate(xh, xo, Eg, VLC)
-        console.print("[bold yellow]You selected: Conventional photocatalysts Plot[/bold yellow]")
-        Eg1,Eg2,Z = Load.Janus_Z_STH(s,VLC)
+        console.print("[bold yellow]You selected: Janus Z-scheme heterojunctions Mapjp[/bold yellow]")
+        Eg1,Eg2,Z = Load.Janus_Z_STH(s,VLC,xh,xo)
 
         Load.Save_JanusZ(Eg1, Eg2, Z, s)
         console.print("[bold yellow]The data and images have been saved to the current folder.[/bold yellow]")
@@ -512,14 +513,6 @@ def choice_Janus_Z(choice):
         console.print("[bold red]Invalid choice! Please try again.[/bold red]")
 
 
-
-# 主程序
-# def main():
-#     while True:
-#         display_menu()
-#         # main_menu()
-#         choice = Prompt.ask("Enter your choice")
-#         handle_choice(choice)
 
 if __name__ == "__main__":
     main()

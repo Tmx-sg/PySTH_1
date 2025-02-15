@@ -1,0 +1,13 @@
+1.xls
+MANIFEST.in
+README.md
+load.py
+main.py
+setup.py
+times(1).ttf
+PySTH.egg-info/PKG-INFO
+PySTH.egg-info/SOURCES.txt
+PySTH.egg-info/dependency_links.txt
+PySTH.egg-info/entry_points.txt
+PySTH.egg-info/requires.txt
+PySTH.egg-info/top_level.txt

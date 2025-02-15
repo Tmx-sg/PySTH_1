@@ -1,3 +1,33 @@
+Metadata-Version: 2.2
+Name: PySTH
+Version: 1.0
+Summary: A brief description of your project.
+Home-page: https://github.com/Tmx-sg/PySTH_1
+Author: Tao
+Author-email: 1713050146@qq.com
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.25.1
+Requires-Dist: matplotlib>=3.9.2
+Requires-Dist: pandas>=2.1.4
+Requires-Dist: xlrd>=2.0.1
+Requires-Dist: rich>=13.8.1
+Requires-Dist: tabulate>=0.9.0
+Provides-Extra: windows
+Requires-Dist: pywin32>=306; extra == "windows"
+Requires-Dist: windows-curses>=2.4.1; extra == "windows"
+Provides-Extra: linux
+Requires-Dist: python-xlib>=0.31; extra == "linux"
+Dynamic: author
+Dynamic: author-email
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 # PySTH Toolkit 
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -70,13 +100,13 @@ Input parameters when prompted:
 - Conduction Band Minimum (CBM) in eV: -4.2
 - Valence Band Maximum (VBM) in eV: -6.5
 View results and generated STH efficiency map
-- ¦Ö(H2) (eV):Hydrogen Evolution Reaction (HER) Overpotential
-- ¦Ö(O2) (eV):Oxygen Evolution Reaction (OER) Overpotential
-- ¦Çabs (%):Light Absorption Efficiency
-- ¦Çcu (%):Charge Utilization Efficiency
-- ¦ÇSTH (%):Solar-to-Hydrogen Conversion Efficiency (Core Metric)
+- Ï‡(H2) (eV):Hydrogen Evolution Reaction (HER) Overpotential
+- Ï‡(O2) (eV):Oxygen Evolution Reaction (OER) Overpotential
+- Î·abs (%):Light Absorption Efficiency
+- Î·cu (%):Charge Utilization Efficiency
+- Î·STH (%):Solar-to-Hydrogen Conversion Efficiency (Core Metric)
 Sample Output
-pH | ¦Ö(H2) (eV) | ¦Ö(O2) (eV) | ¦Çabs (%) | ¦Çcu (%) | ¦ÇSTH (%)
+pH | Ï‡(H2) (eV) | Ï‡(O2) (eV) | Î·abs (%) | Î·cu (%) | Î·STH (%)
 ---|------------|------------|----------|---------|---------
 0  | 0.24       | 0.83       | 12.34    | 45.67   | 5.63
 1  | 0.18       | 0.89       | 11.92    | 44.15   | 5.26
@@ -111,13 +141,13 @@ Generated in system-specific folders:
 
 
 Conventional photocatalysts/
-©À©¤©¤ STH Efficiency vs pH.png
-©À©¤©¤ STH Efficiency vs HER and OER.dat
-©¸©¤©¤ BandGap_Map.png
+â”œâ”€â”€ STH Efficiency vs pH.png
+â”œâ”€â”€ STH Efficiency vs HER and OER.dat
+â””â”€â”€ BandGap_Map.png
 
 Janus materials/
-©À©¤©¤ STH Efficiency vs CBM and VBM.png
-©¸©¤©¤ STH Efficiency vs Eg and ¦¤¦µ.dat
+â”œâ”€â”€ STH Efficiency vs CBM and VBM.png
+â””â”€â”€ STH Efficiency vs Eg and Î”Î¦.dat
 Contributing
 We welcome contributions! Please follow these steps:
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+
 import xlrd
 import numpy as np
 import matplotlib
@@ -7,6 +8,8 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.ticker import FixedLocator, FixedFormatter
+import matplotlib.font_manager as fm
+fm.fontManager.addfont('times(1).ttf')
 matplotlib.use('TkAgg')  # 或 'Agg'（非交互式后端）
 
 
@@ -954,7 +957,6 @@ class Heterojunction_Z:
                 if i + j < 1.23:
                     r.append(np.nan)
                 else:
-
                     E1 = max(i, j)
                     if E1 < 0.615:
                         E1 = 0.615
@@ -1070,12 +1072,8 @@ class Heterojunction_Z:
         # 将数据保存到子文件夹中的dat文件
         file_path = os.path.join(s, "STH Efficiency vs Eg1 and Eg2.dat")
         with open(file_path, "w") as file:
-
-
-            file.write("{:<10}{:<10}{:<10}\n".format('Eg1', 'Eg2', '\u03B7STH (%)'))
-
-            for i, j, k in zip(Eg1, Eg2, Z):
-                file.write("{:<10.2f}{:<10.2f}".format(i, j))
+            file.write("{:<10}\n".format('\u03B7STH (%)'))
+            for k in Z:
                 for k1 in k:
                     file.write("{:<10.2f}".format(k1))
                 file.write('\n')
@@ -1126,9 +1124,15 @@ class Janus_Z:
         elif Xh9 < 0.2 and Xo9 < 0.6:
             E = Eg + 0.8 - Xh9 - Xo9
         return max(E, 0.31)
-    def plot(self, save_path):
-        # Janus_Z 类型的出图逻辑
-        pass
+
+    def plot(self, PH, STH1, save_path):
+        plt.figure(figsize=(10, 6))
+        plt.plot(PH, STH1, marker='o')
+        plt.xlabel('pH')
+        plt.ylabel('STH (%)')
+        plt.title('Conversion Photocatalysts STH vs pH')
+        plt.savefig(save_path)
+        plt.show()
     def Janus_Z_STH(self,s,VLC,xh,xo):
         emax = np.max(self.h)
         # 求最小梯度
@@ -1153,55 +1157,57 @@ class Janus_Z:
         ans = 0
         max1 = 0
         min1 = 1000
-        for i in zip(Eg1):
-            for j in zip(Eg2):
-                if i+j < 1.23:
+        for i in Eg1:
+            for j in Eg2:
+                if i + j < 1.23:
                     r.append(np.nan)
-                    continue
-                if j >= 0.2 and i >= 0.6:
-                    if Eg < 0.31:
-                        Eg = 0.31
-                    E = Eg
-                elif j < 0.2 and i >= 0.6:
-                    E = Eg + 0.2 - j
-                    if E < 0.31:
-                        E = 0.31
-                    if Eg < 0.31:
-                        Eg = 0.31
-                elif j >= 0.2 and i < 0.6:
-                    E = Eg + 0.6 - i
-                    if E < 0.31:
-                        E = 0.31
-                    if Eg < 0.31:
-                        Eg = 0.31
-                elif j < 0.2 and i < 0.6:
-                    E = Eg + 0.8 - i - j
-                    if E < 0.31:
-                        E = 0.31
-                    if Eg < 0.31:
-                        Eg = 0.31
-                Eintp = np.arange(Eg, DEmin + Emax, DEmin)
-                eintp = np.arange(E, emax + dEmin, dEmin)
-                Jintp = np.interp(Eintp, self.l, self.f)
-                jintp = np.interp(eintp, self.h, self.n)
-                fintp = np.interp(Eintp, self.h, self.n)
-                Egg = np.trapz(Jintp, Eintp)
-                Eh = np.trapz(jintp, eintp)
-                Ef = np.trapz(fintp, Eintp)
-                nabs = Egg / 1000.37
-                ncu = Eh * 1.23 / Egg
-                STH = nabs * ncu
-                correctedSTH = STH * 1000.37 / (1000.37 + VLC * Ef)
-                if xh == round(j, 2) and xo == round(i, 2):
-                    ans = correctedSTH * 100
-                if correctedSTH >= max:
-                    max = correctedSTH
-                    xhh = round(j, 2)
-                    xoo = round(i, 2)
-                if correctedSTH < min:
-                    min = correctedSTH
-                r.append(correctedSTH * 100)
+                else:
+                    Eg1 = max(i, j)
+                    if Eg1 < 0:
+                        r.append(np.nan)
+                        continue
+                    if xh >= 0.2 and xo >= 0.6:
+                        if Eg1 < 0.31:
+                            Eg1 = 0.31
+                        E = Eg1
+                    elif xh < 0.2 and xo >= 0.6:
+                        E = Eg1 + 0.2 - xh
+                        if E < 0.31:
+                            E = 0.31
+                        if Eg1 < 0.31:
+                            Eg1 = 0.31
+                    elif xh >= 0.2 and xo < 0.6:
+                        E = Eg1 + 0.6 - xo
+                        if E < 0.31:
+                            E = 0.31
+                        if Eg1 < 0.31:
+                            Eg1 = 0.31
+                    elif xh < 0.2 and xo < 0.6:
+                        E = Eg1 + 0.8 - xh - xo
+                        if E < 0.31:
+                            E = 0.31
+                        if Eg1 < 0.31:
+                            Eg1 = 0.31
+                    E = round(E, 2)
+                    Eintp = np.arange(Eg1, DEmin + Emax, DEmin)  # 无除
+                    eintp = np.arange(E, emax + dEmin, dEmin)  # 有除
+                    Jintp = np.interp(Eintp, self.l, self.f)
+                    jintp = np.interp(eintp, self.h, self.n)
+                    fintp = np.interp(Eintp, self.h, self.n)
+                    Egg = np.trapz(Jintp, Eintp)
+                    Eh = np.trapz(jintp, eintp)
+                    Ef = np.trapz(fintp, Eintp)
+                    # nabs = Egg/1000.37
+                    # ncu = Eh*1.23/Egg
+                    STH = 1.23 * Eh / 1000.37 * 100 / 2
+                    correctedSTH = STH * 1000.37 / (1000.37 + VLC * Ef)
+                    if correctedSTH >= max1:
+                        max1 = correctedSTH
+                    if correctedSTH < min1:
+                        min1 = correctedSTH
+                    r.append(correctedSTH)
             Z.append(r)
+            # print(r)
             r = []
 
         fig, ax = plt.subplots()
@@ -1240,20 +1246,6 @@ class Janus_Z:
             ax.scatter(X[x_val[i], y_val[i]], Y[x_val[i], y_val[i]], marker='*', c='black', s=20)
 
         cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap), ax=ax)
-
-        ticks = [5, 10, 15, 20, 25, 30, 35]  # 刻度值，包括最大值
-        tick_labels = ['5', '10', '15', '20', '25', '30', '35']  # 对应的刻度标签
-
-        # ticks = [25,30,35]  # 刻度值，包括最大值
-        # tick_labels = ['25','30','35']  # 对应的刻度标签
-        cbar.set_ticks(ticks)
-        cbar.set_ticklabels(tick_labels)
-
-        # 使用FixedLocator和FixedFormatter
-        cbar.locator = FixedLocator(ticks)
-        cbar.formatter = FixedFormatter(tick_labels)
-
-        # cbar.ax.invert_xaxis()
 
         cbar.ax.invert_yaxis()
 
@@ -1294,11 +1286,8 @@ class Janus_Z:
         # 将数据保存到子文件夹中的dat文件
         file_path = os.path.join(s, "STH Efficiency vs Eg1 and Eg2.dat")
         with open(file_path, "w") as file:
-
-            file.write("{:<10}{:<10}{:<10}\n".format('Eg1', 'Eg2', '\u03B7\u2032STH (%)'))
-
-            for i, j, k in zip(Eg1, Eg2, Z):
-                file.write("{:<10.2f}{:<10.2f}".format(i, j))
+            file.write("{:<10}\n".format('\u03B7\u2032STH (%)'))
+            for k in Z:
                 for k1 in k:
                     file.write("{:<10.2f}".format(k1))
                 file.write('\n')
