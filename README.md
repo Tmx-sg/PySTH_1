@@ -77,7 +77,6 @@ View results and generated STH efficiency map
 - nSTH (%):Solar-to-Hydrogen Conversion Efficiency (Core Metric)
 Sample Output
 pH | X(H2) (eV) | X(O2) (eV) | nabs (%) | ncu (%) | nSTH (%)
----|------------|------------|----------|---------|---------
 0  | 0.24       | 0.83       | 12.34    | 45.67   | 5.63
 1  | 0.18       | 0.89       | 11.92    | 44.15   | 5.26
 ... 
@@ -111,13 +110,13 @@ Generated in system-specific folders:
 
 
 Conventional photocatalysts/
-©À©¤©¤ STH Efficiency vs pH.png
-©À©¤©¤ STH Efficiency vs HER and OER.dat
-©¸©¤©¤ BandGap_Map.png
+STH Efficiency vs pH.png
+STH Efficiency vs HER and OER.dat
+BandGap_Map.png
 
 Janus materials/
-©À©¤©¤ STH Efficiency vs CBM and VBM.png
-©¸©¤©¤ STH Efficiency vs Eg and ¦¤¦µ.dat
+STH Efficiency vs CBM and VBM.png
+STH Efficiency vs Eg and ¦¤¦µ.dat
 Contributing
 We welcome contributions! Please follow these steps:
 
