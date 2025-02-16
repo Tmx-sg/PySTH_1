@@ -70,13 +70,13 @@ Input parameters when prompted:
 - Conduction Band Minimum (CBM) in eV: -4.2
 - Valence Band Maximum (VBM) in eV: -6.5
 View results and generated STH efficiency map
-- ¦Ö(H2) (eV):Hydrogen Evolution Reaction (HER) Overpotential
-- ¦Ö(O2) (eV):Oxygen Evolution Reaction (OER) Overpotential
-- ¦Çabs (%):Light Absorption Efficiency
-- ¦Çcu (%):Charge Utilization Efficiency
-- ¦ÇSTH (%):Solar-to-Hydrogen Conversion Efficiency (Core Metric)
+- X(H2) (eV):Hydrogen Evolution Reaction (HER) Overpotential
+- X(O2) (eV):Oxygen Evolution Reaction (OER) Overpotential
+- nabs (%):Light Absorption Efficiency
+- ncu (%):Charge Utilization Efficiency
+- nSTH (%):Solar-to-Hydrogen Conversion Efficiency (Core Metric)
 Sample Output
-pH | ¦Ö(H2) (eV) | ¦Ö(O2) (eV) | ¦Çabs (%) | ¦Çcu (%) | ¦ÇSTH (%)
+pH | X(H2) (eV) | X(O2) (eV) | nabs (%) | ncu (%) | nSTH (%)
 ---|------------|------------|----------|---------|---------
 0  | 0.24       | 0.83       | 12.34    | 45.67   | 5.63
 1  | 0.18       | 0.89       | 11.92    | 44.15   | 5.26
