@@ -57,10 +57,12 @@ Main Menu Interface
  4) Janus Z-scheme heterojunctions 
  0) Quit
 ---------------------------------------------------------------------
-Workflow Example (Conventional Photocatalysts)
-Select material type (1-4)
 
-Choose sub-function:
+Workflow Example (Conventional Photocatalysts)(1)
+
+Select material type : 1)
+
+Choose sub-function: 21)
 
 Calculate STH efficiency
 
@@ -69,25 +71,70 @@ Generate STH efficiency map
 Input parameters when prompted:
 - Conduction Band Minimum (CBM) in eV: -4.2
 - Valence Band Maximum (VBM) in eV: -6.5
+
 View results and generated STH efficiency map
 - X(H2) (eV):Hydrogen Evolution Reaction (HER) Overpotential
 - X(O2) (eV):Oxygen Evolution Reaction (OER) Overpotential
 - nabs (%):Light Absorption Efficiency
 - ncu (%):Charge Utilization Efficiency
 - nSTH (%):Solar-to-Hydrogen Conversion Efficiency (Core Metric)
+
 Sample Output
+
 pH | X(H2) (eV) | X(O2) (eV) | nabs (%) | ncu (%) | nSTH (%)
+
 0  | 0.24       | 0.83       | 12.34    | 45.67   | 5.63
+
 1  | 0.18       | 0.89       | 11.92    | 44.15   | 5.26
+
 ... 
+
+Workflow Example (Janus materials)(2)
+
+Select material type : 2)
+
+Calculate STH efficiency :21)
+
+The direction of the vacuum level difference : 1)
+
+Select type : 211) (monolayer)
+
+Input parameters when prompted:
+- Conduction Band Minimum (CBM) in eV: -4.94
+- Valence Band Maximum (VBM) in eV: -6.08
+- Vacuum Level Difference (¶§¶µ) in eV: 1
+
+In the following pH range, photocatalytic materials can split water
+
+pH: 0 - 8
+
+  pH  |  ¶÷(H2) (eV) |   ¶÷(O2) (eV)   | ¶«abs (%)  |  ¶«cu (%)  |  ¶«STH (%) |   ¶«°‰STH (%)
+
+----  ------------  ------------  ----------  ---------  ----------  -----------
+
+   0  |     0.50    |   0.41  |   79.75   |   54.46   |    43.43   |     30.39
+
+   1  |     0.44    |   0.47  |   79.75   |   56.54   |    45.10   |     31.56
+
+   2  |     0.38    |   0.53  |   79.75   |   60.74   |   48.44    |    33.90
+
+   3  |     0.32    |   0.59  |   79.75   |   65.20   |   52.00    |    36.39
+
+...
+
+
+
 Architecture
+
 Core Modules
 Module	Description
 load.py	Contains data processing and calculation logic:
 - load_data()
 - calculate_STH()
 - Material classes (General, Heterojunction_Z, etc.)
+
 main.py	Handles user interaction:
+-
 - CLI interface
 - Input validation
 - Result display
